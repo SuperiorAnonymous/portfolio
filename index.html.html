@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Team Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090d;
+  --bg2:#0e1117;
+  --bg3:#161c27;
+  --border:rgba(255,255,255,0.06);
+  --text:#dde4f0;
+  --muted:#6b778d;
+  --dim:#353d4d;
+  --c1:#f0b429;
+  --c2:#34d399;
+  --c3:#60a5fa;
+  --mono:'DM Mono',monospace;
+  --body:'Outfit',sans-serif;
+  --display:'Bebas Neue',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.7;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* ── NOISE OVERLAY ── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity:0.025;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 48px;
+  transition:.3s ease;
+}
+nav.scrolled{background:rgba(7,9,13,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--display);font-size:22px;letter-spacing:.1em;color:var(--c1)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.05em;transition:.25s}
+.nav-links a:hover{color:var(--text)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--text);transition:.3s}
+
+/* ── HERO ── */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;padding:120px 24px 80px;
+}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 20%,transparent 100%);
+}
+.glow{position:absolute;border-radius:50%;filter:blur(100px);opacity:.18}
+.g1{width:600px;height:600px;background:var(--c1);top:-200px;left:-100px;animation:fl 9s ease-in-out infinite}
+.g2{width:400px;height:400px;background:var(--c3);bottom:-100px;right:-100px;animation:fl 11s ease-in-out infinite reverse}
+.g3{width:300px;height:300px;background:var(--c2);top:50%;left:50%;transform:translate(-50%,-50%);animation:fl 7s ease-in-out infinite 2s}
+@keyframes fl{0%,100%{transform:translate(0,0)}50%{transform:translate(25px,-25px)}}
+
+.hero-content{position:relative;z-index:1;max-width:800px}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 18px;border:1px solid var(--border);border-radius:100px;
+  font-family:var(--mono);font-size:11px;color:var(--muted);
+  margin-bottom:28px;background:rgba(255,255,255,.03);
+  animation:fadeUp .5s ease both;
+}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--c2);box-shadow:0 0 8px var(--c2);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.hero h1{
+  font-family:var(--display);
+  font-size:clamp(64px,14vw,140px);
+  line-height:.9;letter-spacing:.02em;
+  color:var(--text);margin-bottom:16px;
+  animation:fadeUp .5s .1s ease both;
+}
+.hero h1 em{font-style:normal;color:var(--c1)}
+.hero-sub{
+  font-family:var(--mono);font-size:13px;color:var(--muted);
+  letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:48px;animation:fadeUp .5s .2s ease both;
+}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeUp .5s .3s ease both}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 26px;border-radius:6px;
+  font-family:var(--mono);font-size:12px;font-weight:500;
+  letter-spacing:.04em;transition:.25s;border:1px solid transparent;cursor:pointer;
+}
+.btn-primary{background:var(--c1);color:#07090d;border-color:var(--c1)}
+.btn-primary:hover{background:transparent;color:var(--c1);box-shadow:0 0 24px rgba(240,180,41,.2)}
+.btn-ghost{background:transparent;color:var(--text);border-color:var(--border)}
+.btn-ghost:hover{border-color:var(--c1);color:var(--c1)}
+
+/* ── SECTIONS ── */
+section{padding:100px 0;border-top:1px solid var(--border);position:relative;z-index:1}
+.container{max-width:1080px;margin:0 auto;padding:0 28px}
+.sec-header{display:flex;align-items:baseline;gap:14px;margin-bottom:56px}
+.sec-num{font-family:var(--mono);font-size:11px;color:var(--c1);letter-spacing:.1em}
+.sec-title{font-family:var(--display);font-size:clamp(32px,6vw,56px);letter-spacing:.02em;color:var(--text)}
+
+/* ── TEAM ── */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border)}
+.member-card{
+  background:var(--bg2);padding:48px 36px;
+  transition:.3s ease;cursor:pointer;position:relative;overflow:hidden;
+}
+.member-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent 60%,rgba(255,255,255,.02));
+  opacity:0;transition:.3s;
+}
+.member-card:hover{background:var(--bg3)}
+.member-card:hover::before{opacity:1}
+
+.member-card[data-color="gold"]:hover .member-num{color:var(--c1)}
+.member-card[data-color="green"]:hover .member-num{color:var(--c2)}
+.member-card[data-color="blue"]:hover .member-num{color:var(--c3)}
+
+.member-card[data-color="gold"] .member-accent{background:var(--c1)}
+.member-card[data-color="green"] .member-accent{background:var(--c2)}
+.member-card[data-color="blue"] .member-accent{background:var(--c3)}
+
+.member-card[data-color="gold"]:hover .member-role{color:var(--c1)}
+.member-card[data-color="green"]:hover .member-role{color:var(--c2)}
+.member-card[data-color="blue"]:hover .member-role{color:var(--c3)}
+
+.member-accent{width:32px;height:3px;border-radius:2px;margin-bottom:28px;transition:.3s}
+.member-num{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.1em;margin-bottom:12px;transition:.3s}
+.member-name{font-family:var(--display);font-size:clamp(28px,4vw,42px);letter-spacing:.02em;color:var(--text);margin-bottom:6px;line-height:1}
+.member-role{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:24px;transition:.3s}
+.member-bio{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:28px}
+.member-skills{display:flex;flex-wrap:wrap;gap:7px}
+.skill-tag{
+  padding:4px 12px;border-radius:100px;
+  font-family:var(--mono);font-size:11px;
+  border:1px solid var(--border);color:var(--muted);
+  transition:.25s;
+}
+.member-card:hover .skill-tag{border-color:var(--dim)}
+
+/* ── ABOUT / PROJECT ── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.about-text p{color:var(--muted);font-size:14px;margin-bottom:16px}
+.about-text strong{color:var(--text)}
+.about-stats{display:flex;gap:40px;margin-top:40px;padding-top:32px;border-top:1px solid var(--border)}
+.stat-num{display:block;font-family:var(--display);font-size:48px;line-height:1}
+.stat-label{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
+.stat-item[data-c="gold"] .stat-num{color:var(--c1)}
+.stat-item[data-c="green"] .stat-num{color:var(--c2)}
+.stat-item[data-c="blue"] .stat-num{color:var(--c3)}
+
+.about-visual{
+  background:var(--bg2);border:1px solid var(--border);border-radius:12px;
+  padding:36px;display:flex;flex-direction:column;gap:16px;
+}
+.av-row{display:flex;align-items:center;gap:16px}
+.av-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.av-dot.gold{background:var(--c1);box-shadow:0 0 10px var(--c1)}
+.av-dot.green{background:var(--c2);box-shadow:0 0 10px var(--c2)}
+.av-dot.blue{background:var(--c3);box-shadow:0 0 10px var(--c3)}
+.av-name{font-family:var(--display);font-size:18px;letter-spacing:.04em;color:var(--text);min-width:160px}
+.av-bar-wrap{flex:1;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.av-bar{height:100%;border-radius:2px;width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.av-pct{font-family:var(--mono);font-size:11px;color:var(--muted);min-width:36px;text-align:right}
+
+/* ── PROJECT ── */
+.project-box{
+  background:var(--bg2);border:1px solid var(--border);border-radius:12px;
+  padding:40px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:start;
+}
+.project-box:hover{border-color:rgba(240,180,41,.25)}
+.project-tag{
+  font-family:var(--mono);font-size:10px;color:var(--c1);
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;
+}
+.project-title{font-family:var(--display);font-size:32px;letter-spacing:.03em;color:var(--text);margin-bottom:12px}
+.project-desc{font-size:13px;color:var(--muted);max-width:540px;margin-bottom:24px}
+.project-stack{display:flex;flex-wrap:wrap;gap:8px}
+.stack-badge{
+  padding:5px 14px;border-radius:6px;
+  font-family:var(--mono);font-size:11px;
+  background:var(--bg3);border:1px solid var(--border);color:var(--muted);
+}
+.project-meta{display:flex;flex-direction:column;gap:12px;align-items:flex-end}
+.meta-item{text-align:right}
+.meta-label{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.08em;display:block}
+.meta-val{font-family:var(--mono);font-size:13px;color:var(--text)}
+
+/* ── CONTACT ── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.contact-text p{font-size:14px;color:var(--muted);margin-bottom:32px}
+.contact-members{display:flex;flex-direction:column;gap:16px}
+.cm-item{
+  display:flex;align-items:center;gap:16px;
+  padding:16px 20px;border:1px solid var(--border);border-radius:8px;
+  background:var(--bg2);transition:.25s;
+}
+.cm-item:hover{border-color:var(--dim)}
+.cm-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.cm-dot.gold{background:var(--c1)}
+.cm-dot.green{background:var(--c2)}
+.cm-dot.blue{background:var(--c3)}
+.cm-info{flex:1}
+.cm-name{font-family:var(--display);font-size:18px;letter-spacing:.03em;color:var(--text)}
+.cm-role{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.cm-email{font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+.contact-form{display:flex;flex-direction:column;gap:16px}
+.fg{display:flex;flex-direction:column;gap:6px}
+.fg label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.fg input,.fg textarea,.fg select{
+  background:var(--bg3);border:1px solid var(--border);border-radius:6px;
+  padding:11px 15px;color:var(--text);font-family:var(--mono);font-size:13px;
+  outline:none;transition:.25s;resize:none;
+}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(240,180,41,.1)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--dim)}
+.fg select option{background:var(--bg3)}
+.form-note{font-family:var(--mono);font-size:11px;color:var(--dim);line-height:1.5}
+
+/* ── DEVOPS ── */
+.pipeline{
+  display:flex;align-items:center;justify-content:center;
+  flex-wrap:wrap;gap:8px;margin-bottom:56px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:12px;padding:36px 24px;
+}
+.pipe-step{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;min-width:100px}
+.pipe-icon{
+  width:52px;height:52px;border-radius:12px;border:1px solid;
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+}
+.pipe-label{font-family:var(--display);font-size:16px;letter-spacing:.04em;color:var(--text)}
+.pipe-desc{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.04em;max-width:90px}
+.pipe-arrow{font-size:20px;color:var(--dim);margin:0 4px}
+
+.devops-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.devops-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  padding:24px;display:flex;flex-direction:column;gap:10px;transition:.25s;
+}
+.devops-card:hover{border-color:var(--dim);transform:translateY(-3px)}
+.dc-badge{
+  display:inline-block;padding:3px 10px;border-radius:100px;border:1px solid;
+  font-family:var(--mono);font-size:10px;letter-spacing:.06em;align-self:flex-start;
+}
+.dc-title{font-family:var(--display);font-size:20px;letter-spacing:.03em;color:var(--text)}
+.dc-desc{font-size:12px;color:var(--muted);line-height:1.6;flex:1}
+.dc-file{font-family:var(--mono);font-size:11px;color:var(--dim);padding-top:8px;border-top:1px solid var(--border)}
+
+@media(max-width:640px){
+  .pipeline{flex-direction:column}
+  .pipe-arrow{transform:rotate(90deg)}
+}
+
+/* ── FOOTER ── */
+footer{
+  padding:28px 0;border-top:1px solid var(--border);
+  text-align:center;position:relative;z-index:1;
+}
+footer p{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.06em}
+footer span{color:var(--c1)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.fu{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.fu.vis{opacity:1;transform:translateY(0)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .team-grid{grid-template-columns:1fr}
+  .about-grid,.contact-grid{grid-template-columns:1fr}
+  .project-box{grid-template-columns:1fr}
+  .project-meta{align-items:flex-start}
+  nav{padding:16px 24px}
+}
+@media(max-width:640px){
+  .nav-links{
+    display:none;position:fixed;inset:0;background:var(--bg);
+    flex-direction:column;align-items:center;justify-content:center;
+    gap:32px;font-size:18px;z-index:99;
+  }
+  .nav-links.open{display:flex}
+  .hamburger{display:flex;z-index:101}
+  .hero h1{font-size:clamp(52px,16vw,90px)}
+  .about-stats{flex-direction:column;gap:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">MM · FE · KO</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#team">komanda</a></li>
+    <li><a href="#about">haqqında</a></li>
+    <li><a href="#project">layihə</a></li>
+    <li><a href="#devops">devops</a></li>
+    <li><a href="#contact">əlaqə</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="glow g1"></div>
+    <div class="glow g2"></div>
+    <div class="glow g3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      DevOps · Group M665aS · AzTU
+    </div>
+    <h1>TEAM<br/><em>PORTFOLIO</em></h1>
+    <p class="hero-sub">Murad Muradov &nbsp;·&nbsp; Fəxrəddin Əhmədov &nbsp;·&nbsp; Kenan Orucov</p>
+    <div class="hero-cta">
+      <a href="#team" class="btn btn-primary">Komandaya bax</a>
+      <a href="#project" class="btn btn-ghost">Layihəyə bax</a>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="container">
+    <div class="sec-header fu">
+      <span class="sec-num">01</span>
+      <h2 class="sec-title">Komanda</h2>
+    </div>
+  </div>
+  <div class="team-grid fu">
+
+    <div class="member-card" data-color="gold">
+      <div class="member-accent"></div>
+      <div class="member-num">01 / 03</div>
+      <h3 class="member-name">Murad<br/>Muradov</h3>
+      <p class="member-role">Data Analyst</p>
+      <p class="member-bio">Maliyyə sektoru üzrə məlumat analitiki. Oracle SQL və DWH sistemlərindən istifadə edərək bank məlumatlarını analiz edir.</p>
+      <div class="member-skills">
+        <span class="skill-tag">Oracle SQL</span>
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">DWH</span>
+        <span class="skill-tag">ETL</span>
+        <span class="skill-tag">Excel</span>
+      </div>
+    </div>
+
+    <div class="member-card" data-color="blue">
+      <div class="member-accent"></div>
+      <div class="member-num">02 / 03</div>
+      <h3 class="member-name">Kenan<br/>Orucov</h3>
+      <p class="member-role">Software Developer</p>
+      <p class="member-bio">Proqram təminatı üzrə mütəxəssis. Veb və backend tətbiqlərinin hazırlanması sahəsində təcrübəlidir.</p>
+      <div class="member-skills">
+        <span class="skill-tag">Java</span>
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">Web Dev</span>
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">Git</span>
+      </div>
+    </div>
+
+    <div class="member-card" data-color="green">
+      <div class="member-accent"></div>
+      <div class="member-num">03 / 03</div>
+      <h3 class="member-name">Fəxrəddin<br/>Əhmədov</h3>
+      <p class="member-role">Accountant</p>
+      <p class="member-bio">Maliyyə uçotu və audit sahəsinin mütəxəssisi. Vergi qanunvericiliyi və mühasibat sistemləri üzrə dərin biliyə malikdir.</p>
+      <div class="member-skills">
+        <span class="skill-tag">1C</span>
+        <span class="skill-tag">Mühasibat</span>
+        <span class="skill-tag">Vergi</span>
+        <span class="skill-tag">Audit</span>
+        <span class="skill-tag">Excel</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="sec-header fu">
+      <span class="sec-num">02</span>
+      <h2 class="sec-title">Haqqımızda</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text fu">
+        <p>Biz <strong>Azərbaycan Texniki Universiteti (AzTU)</strong>-nin Süni İntellekt ixtisası üzrə tələbələrik. Bu portfolio saytı DevOps fənninin serbest iş tapşırığı çərçivəsində hazırlanmışdır.</p>
+        <p>Komandamız müxtəlif sahələri əhatə edir — məlumat analitikası, proqram inkişafı və maliyyə uçotu. Bu müxtəliflik bizə mürəkkəb problemlərə çoxşaxəli yanaşma imkanı verir.</p>
+        <div class="about-stats">
+          <div class="stat-item" data-c="gold">
+            <span class="stat-num">3</span>
+            <span class="stat-label">Komanda üzvü</span>
+          </div>
+          <div class="stat-item" data-c="blue">
+            <span class="stat-num">3+</span>
+            <span class="stat-label">Sahə</span>
+          </div>
+          <div class="stat-item" data-c="green">
+            <span class="stat-num">1</span>
+            <span class="stat-label">Layihə</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual fu" id="skillBars">
+        <div class="av-row">
+          <div class="av-dot gold"></div>
+          <div class="av-name">Murad</div>
+          <div class="av-bar-wrap"><div class="av-bar" data-w="88" style="background:var(--c1)"></div></div>
+          <div class="av-pct">Data</div>
+        </div>
+        <div class="av-row">
+          <div class="av-dot blue"></div>
+          <div class="av-name">Kenan</div>
+          <div class="av-bar-wrap"><div class="av-bar" data-w="82" style="background:var(--c3)"></div></div>
+          <div class="av-pct">Dev</div>
+        </div>
+        <div class="av-row">
+          <div class="av-dot green"></div>
+          <div class="av-name">Fəxrəddin</div>
+          <div class="av-bar-wrap"><div class="av-bar" data-w="90" style="background:var(--c2)"></div></div>
+          <div class="av-pct">Finance</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT -->
+<section id="project">
+  <div class="container">
+    <div class="sec-header fu">
+      <span class="sec-num">03</span>
+      <h2 class="sec-title">Layihə</h2>
+    </div>
+    <div class="project-box fu">
+      <div>
+        <p class="project-tag">DevOps · Serbest İş</p>
+        <h3 class="project-title">Şəxsi Portfolio Saytı</h3>
+        <p class="project-desc">
+          DevOps prinsiplərinə uyğun hazırlanmış statik komanda portfolio saytı. Nginx Alpine konteynerində işləyir, GitHub Actions vasitəsilə avtomatik AWS S3-ə deploy olunur. Responsive dizayn, əlaqə forması və komanda bölməsi daxildir.
+        </p>
+        <div class="project-stack">
+          <span class="stack-badge">HTML/CSS/JS</span>
+          <span class="stack-badge">Nginx Alpine</span>
+          <span class="stack-badge">Docker</span>
+          <span class="stack-badge">GitHub Actions</span>
+          <span class="stack-badge">AWS S3</span>
+        </div>
+      </div>
+      <div class="project-meta">
+        <div class="meta-item">
+          <span class="meta-label">Tip</span>
+          <span class="meta-val">Static Site</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Hosting</span>
+          <span class="meta-val">AWS S3</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">CI/CD</span>
+          <span class="meta-val">GitHub Actions</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Container</span>
+          <span class="meta-val">Nginx Alpine</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEVOPS -->
+<section id="devops">
+  <div class="container">
+    <div class="sec-header fu">
+      <span class="sec-num">04</span>
+      <h2 class="sec-title">DevOps Arxitekturası</h2>
+    </div>
+    <div class="pipeline fu">
+      <div class="pipe-step">
+        <div class="pipe-icon" style="border-color:var(--c3);color:var(--c3)">💻</div>
+        <div class="pipe-label">Developer</div>
+        <div class="pipe-desc">Kod yazılır</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-icon" style="border-color:var(--c1);color:var(--c1)">🐙</div>
+        <div class="pipe-label">GitHub</div>
+        <div class="pipe-desc">git push → main</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-icon" style="border-color:var(--c2);color:var(--c2)">⚙️</div>
+        <div class="pipe-label">GitHub Actions</div>
+        <div class="pipe-desc">CI/CD pipeline işə düşür</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-icon" style="border-color:#ff9900;color:#ff9900">☁️</div>
+        <div class="pipe-label">AWS S3</div>
+        <div class="pipe-desc">Deploy olunur</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-icon" style="border-color:var(--text);color:var(--text)">🌐</div>
+        <div class="pipe-label">İstifadəçi</div>
+        <div class="pipe-desc">Sayt açılır</div>
+      </div>
+    </div>
+    <div class="devops-grid fu">
+      <div class="devops-card">
+        <span class="dc-badge" style="color:var(--c3);border-color:var(--c3)">Frontend</span>
+        <h3 class="dc-title">HTML · CSS · JS</h3>
+        <p class="dc-desc">Saytın bütün görünüşü və interaktivliyi. Xarici server olmadan işləyir.</p>
+        <div class="dc-file">📄 index.html</div>
+      </div>
+      <div class="devops-card">
+        <span class="dc-badge" style="color:var(--c1);border-color:var(--c1)">Container</span>
+        <h3 class="dc-title">Docker + Nginx Alpine</h3>
+        <p class="dc-desc">Sayt 25MB-lıq yüngül Nginx Alpine konteynerində işləyir. Hər mühitdə eyni nəticə verir.</p>
+        <div class="dc-file">📄 Dockerfile · nginx.conf</div>
+      </div>
+      <div class="devops-card">
+        <span class="dc-badge" style="color:var(--c2);border-color:var(--c2)">CI/CD</span>
+        <h3 class="dc-title">GitHub Actions</h3>
+        <p class="dc-desc">main-ə hər push-da avtomatik: Docker build → test → AWS S3 sync. Manuel deploy yoxdur.</p>
+        <div class="dc-file">📄 .github/workflows/deploy.yml</div>
+      </div>
+      <div class="devops-card">
+        <span class="dc-badge" style="color:#ff9900;border-color:#ff9900">Hosting</span>
+        <h3 class="dc-title">AWS S3</h3>
+        <p class="dc-desc">Amazon S3-də static website hosting. Yüksək əlçatanlıq, avtomatik ölçəklənmə.</p>
+        <div class="dc-file">📄 S3 Bucket · IAM Policy</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="sec-header fu">
+      <span class="sec-num">05</span>
+      <h2 class="sec-title">Əlaqə</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="fu">
+        <p class="contact-text">Komanda üzvlərimizlə əlaqə saxlamaq üçün formu doldurun.</p>
+        <div class="contact-members">
+          <div class="cm-item">
+            <div class="cm-dot gold"></div>
+            <div class="cm-info">
+              <div class="cm-name">Murad Muradov</div>
+              <div class="cm-role">Data Analyst</div>
+            </div>
+            <div class="cm-email">murad@example.com</div>
+          </div>
+          <div class="cm-item">
+            <div class="cm-dot blue"></div>
+            <div class="cm-info">
+              <div class="cm-name">Kenan Orucov</div>
+              <div class="cm-role">Software Developer</div>
+            </div>
+            <div class="cm-email">kenan@example.com</div>
+          </div>
+          <div class="cm-item">
+            <div class="cm-dot green"></div>
+            <div class="cm-info">
+              <div class="cm-name">Fəxrəddin Əhmədov</div>
+              <div class="cm-role">Accountant</div>
+            </div>
+            <div class="cm-email">fexri@example.com</div>
+          </div>
+        </div>
+      </div>
+      <form class="contact-form fu" id="form">
+        <div class="fg">
+          <label>Ad Soyad</label>
+          <input type="text" placeholder="Adınız" required/>
+        </div>
+        <div class="fg">
+          <label>E-mail</label>
+          <input type="email" placeholder="email@example.com" required/>
+        </div>
+        <div class="fg">
+          <label>Kimə</label>
+          <select>
+            <option>Murad Muradov — Data Analyst</option>
+            <option>Kenan Orucov — Software Developer</option>
+            <option>Fəxrəddin Əhmədov — Accountant</option>
+            <option>Bütün komanda</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Mesaj</label>
+          <textarea rows="4" placeholder="Mesajınızı yazın..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center" id="submitBtn">Göndər</button>
+        <p class="form-note">* Forma demo modundadır. Real göndəriş üçün Formspree inteqrasiyası lazımdır.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><span>Murad</span> · <span>Fəxrəddin</span> · <span>Kenan</span> &nbsp;—&nbsp; AzTU M665aS · <span id="yr"></span></p>
+</footer>
+
+<script>
+// Nav scroll
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
+
+// Hamburger
+const hb=document.getElementById('hamburger');
+const nl=document.getElementById('navLinks');
+hb.addEventListener('click',()=>{
+  nl.classList.toggle('open');
+  const sp=hb.querySelectorAll('span'),op=nl.classList.contains('open');
+  sp[0].style.transform=op?'rotate(45deg) translate(4.5px,4.5px)':'';
+  sp[1].style.opacity=op?'0':'';
+  sp[2].style.transform=op?'rotate(-45deg) translate(4.5px,-4.5px)':'';
+});
+nl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  nl.classList.remove('open');
+  hb.querySelectorAll('span').forEach(s=>{s.style.transform='';s.style.opacity='';});
+}));
+
+// Scroll animations
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('vis'),i*60);
+      obs.unobserve(e.target);
+    }
+  });
+},{threshold:.1});
+document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
+
+// Skill bars animation
+const barObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.av-bar').forEach(bar=>{
+        bar.style.width=bar.dataset.w+'%';
+      });
+      barObs.unobserve(e.target);
+    }
+  });
+},{threshold:.3});
+barObs.observe(document.getElementById('skillBars'));
+
+// Form
+document.getElementById('form').addEventListener('submit',e=>{
+  e.preventDefault();
+  const btn=document.getElementById('submitBtn');
+  btn.textContent='Göndərildi ✓';
+  btn.style.background='var(--c2)';
+  btn.style.borderColor='var(--c2)';
+  e.target.reset();
+  setTimeout(()=>{btn.textContent='Göndər';btn.style.background='';btn.style.borderColor='';},3000);
+});
+
+// Year
+document.getElementById('yr').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
