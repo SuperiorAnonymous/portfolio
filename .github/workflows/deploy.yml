@@ -1,0 +1,24 @@
+name: Deploy Portfolio
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Docker image qur
+        run: docker build -t portfolio .
+
+      - name: Container test et
+        run: |
+          docker run -d --name test -p 8080:80 portfolio
+          sleep 3
+          curl -f http://localhost:8080 || exit 1
+          docker stop test
+
+      - name: Test keçdi
+        run: echo "✅ Nginx + Docker uğurla işlədi"
